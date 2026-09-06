@@ -1,0 +1,105 @@
+<!--
+<div class="container">
+  <h1>List Alchemist</h1>
+  <p>Paste a rough description of what you're selling.</p>
+
+  <textarea
+    [ngModel]="description()"
+    (ngModelChange)="description.set($event)"
+    placeholder="e.g. Vintage leather jacket, worn once, size M"
+    rows="4"
+  ></textarea>
+
+  <div class="actions">
+    <button (click)="onSubmit()" [disabled]="isLoading() || !description().trim()">
+      @if (isLoading()) {
+        Consulting the orb...
+      } @else {
+        🪄 Get suggestions
+      }
+    </button>
+
+    <button
+      type="button"
+      class="clear-button"
+      (click)="onClear()"
+      [disabled]="isLoading() || (!description() && !hasSubmitted())"
+    >
+      Clear
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="crystal-ball">🔮</div>
+  }
+
+  @if (hasSubmitted() && !isLoading()) {
+    <div class="result">
+      @if (suggestion()?.error) {
+        <p class="error">{{ suggestion()?.error }}</p>
+      } @else {
+        <h2>{{ suggestion()?.title }}</h2>
+        <div class="tags">
+          @for (tag of suggestion()?.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+          }
+        </div>
+        <p class="price">{{ suggestion()?.priceRange }}</p>
+        <p>{{ suggestion()?.confidenceNote }}</p>
+      }
+    </div>
+  }
+</div>
+-->
+
+<div class="container">
+  <h1>List Alchemist</h1>
+  <p>Paste a rough description of what you're selling.</p>
+
+  <textarea
+    [ngModel]="description()"
+    (ngModelChange)="description.set($event)"
+    placeholder="e.g. Vintage leather jacket, worn once, size M"
+    rows="4"
+  ></textarea>
+
+  <div class="actions">
+    <button (click)="onSubmit()" [disabled]="isLoading() || !description().trim()">
+      ✨ Get suggestions
+    </button>
+    <button
+      type="button"
+      class="clear-button"
+      (click)="onClear()"
+      [disabled]="isLoading() || (!description() && !hasSubmitted())"
+    >
+      Clear
+    </button>
+  </div>
+
+  @if (hasSubmitted() && !isLoading()) {
+    <div class="result">
+      @if (suggestion()?.error) {
+        <p class="error">{{ suggestion()?.error }}</p>
+      } @else {
+        <h2>{{ suggestion()?.title }}</h2>
+        <div class="tags">
+          @for (tag of suggestion()?.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+          }
+        </div>
+        <p class="price">{{ suggestion()?.priceRange }}</p>
+        @if (suggestion()?.confidenceNote) {
+          <p class="confidence-note">{{ suggestion()?.confidenceNote }}</p>
+        }
+      }
+    </div>
+  }
+</div>
+
+@if (isLoading()) {
+  <div class="loading-overlay">
+    <div class="transmutation-ring"></div>
+    <span>Alchemising...</span>
+  </div>
+}
