@@ -4,8 +4,8 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { ListingService, ListingSuggestion } from '@core/listing-service/listing-service';
 
-import { ListingService, ListingSuggestion } from './listing-service';
 
 describe('ListingService', () => {
   let service: ListingService;
