@@ -2,7 +2,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { ListingFormComponent } from './listing-form';
-import { ListingService, ListingSuggestion } from '../listing-service';
+import { ListingService, ListingSuggestion } from '@core/listing-service/listing-service';
+
 
 describe('ListingFormComponent', () => {
   let component: ListingFormComponent;
@@ -22,8 +23,16 @@ describe('ListingFormComponent', () => {
   });
 
   describe('onSubmit', () => {
-    it('does not call the service when description is empty or whitespace-only', () => {
-      component.description.set('   ');
+    it('does not call the service when the form is invalid (empty description)', () => {
+      component.form.controls.description.setValue('');
+
+      component.onSubmit();
+
+      expect(mockListingService.getSuggestion).not.toHaveBeenCalled();
+    });
+
+    it('does not call the service when description is below the minimum length', () => {
+      component.form.controls.description.setValue('short');
 
       component.onSubmit();
 
@@ -37,7 +46,9 @@ describe('ListingFormComponent', () => {
         priceRange: '€40 - €60',
       };
       mockListingService.getSuggestion.mockReturnValue(of(mockResponse));
-      component.description.set('vintage leather jacket');
+      component.form.controls.description.setValue(
+        'vintage leather jacket, worn once, size M',
+      );
 
       component.onSubmit();
 
@@ -46,32 +57,32 @@ describe('ListingFormComponent', () => {
       expect(component.hasSubmitted()).toBe(true);
     });
 
-    it('populates suggestion with a parsed error message when the request fails', () => {
+    it('populates suggestion with a generic error message when the request fails', () => {
       mockListingService.getSuggestion.mockReturnValue(
-        throwError(() => ({
-          error: { message: ['Description is too short to generate an answer'] },
-        })),
+        throwError(() => ({ status: 502 })),
       );
-      component.description.set('short');
+      component.form.controls.description.setValue(
+        'vintage leather jacket, worn once, size M',
+      );
 
       component.onSubmit();
 
       expect(component.suggestion()?.error).toBe(
-        'Description is too short to generate an answer',
+        'Something went wrong — please try again',
       );
       expect(component.isLoading()).toBe(false);
     });
   });
 
   describe('onClear', () => {
-    it('resets description, suggestion, and hasSubmitted', () => {
-      component.description.set('something');
+    it('resets the form, suggestion, and hasSubmitted', () => {
+      component.form.controls.description.setValue('something');
       component.suggestion.set({ title: 'x', tags: [], priceRange: '€10' });
       component.hasSubmitted.set(true);
 
       component.onClear();
 
-      expect(component.description()).toBe('');
+      expect(component.form.controls.description.value).toBe('');
       expect(component.suggestion()).toBeNull();
       expect(component.hasSubmitted()).toBe(false);
     });

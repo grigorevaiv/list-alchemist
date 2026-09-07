@@ -1,29 +1,39 @@
 <div class="container">
   <h1>List Alchemist</h1>
-  <p>Paste a rough description of what you're selling.</p>
+  <p>Paste a rough description of what you're selling. It should be within 20-500 characters.</p>
 
-  <textarea
-    [ngModel]="description()"
-    (ngModelChange)="description.set($event)"
-    placeholder="e.g. Vintage leather jacket, worn once, size M"
-    rows="4"
-  ></textarea>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <textarea
+      formControlName="description"
+      placeholder="e.g. Vintage leather jacket, worn once, size M"
+      rows="4"
+      (input)="suggestion.set(null)"
+    ></textarea>
 
-  <div class="actions">
-    <button (click)="onSubmit()" [disabled]="isLoading() || !description().trim()">
-      ✨ Get suggestions
-    </button>
-    <button
-      type="button"
-      class="clear-button"
-      (click)="onClear()"
-      [disabled]="isLoading() || (!description() && !hasSubmitted())"
-    >
-      Clear
-    </button>
-  </div>
+    <div class="field-meta">
+      <span class="char-count" [class.over-limit]="characterCount() > 500">
+        {{ characterCount() }}/500
+      </span>
+    </div>
 
-  @if (hasSubmitted() && !isLoading()) {
+    @if (validationError && descriptionInput.touched) {
+      <span class="error">{{ validationError }}</span>
+    }
+
+    <div class="actions">
+      <button type="submit" [disabled]="isLoading()">✨ Get suggestions</button>
+      <button
+        type="button"
+        class="clear-button"
+        (click)="onClear()"
+        [disabled]="isLoading() || (!descriptionInput.value && !suggestion())"
+      >
+        Clear
+      </button>
+    </div>
+  </form>
+
+  @if (suggestion() && !isLoading()) {
     <div class="result">
       @if (suggestion()?.error) {
         <p class="error">{{ suggestion()?.error }}</p>
