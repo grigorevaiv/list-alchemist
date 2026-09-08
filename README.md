@@ -1,59 +1,73 @@
-# ListAlchemist
+# List Alchemist
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.8.
+Angular frontend for **List Alchemist**: turns a rough description of a second-hand item into a
+listing title, search tags and an estimated price range.
 
-## Development server
+Backend repo: [list alchemist api](https://github.com/grigorevaiv/list-alchemist-api)
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Quick start
 
 ```bash
-ng generate component component-name
+npm install
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+Opens on `http://localhost:4200`.
 
-To build the project run:
+**The backend has to be running too.** By default this app points at `http://localhost:3000`
+(`src/environments/environment.ts`). Start the API in mock mode — no API key needed:
+
+[backend README](https://github.com/grigorevaiv/list-alchemist-api#quick-start-mock-mode)
+
+If you'd rather not run the backend at all, point `environment.ts` at the deployed API instead:
+`https://list-alchemist-api.onrender.com`. Note it sleeps when idle, so the first request can take
+30–60 seconds.
+
+### If you don't want to start backend locally, both frontend and backend are deployed and connected
+To run the whole app against the real model, go [here](https://list-alchemist.onrender.com/)
+
+### Environments
+
+| File | Used by | API URL |
+|---|---|---|
+| `src/environments/environment.ts` | `npm start` (development) | `http://localhost:3000` |
+| `src/environments/environment.prod.ts` | `npm run build` (production) | deployed API |
+
+---
+
+## How it works
+
+One screen, one form. Just paste or insert your description in the text field.
+The description must be **20–500 characters after trimming**.
+It either returns a listing with title, tags and price range (sometimes with a note asking for more
+detail to sharpen the estimate), or an error message if the model or the connection has a problem.
+
+---
+
+## Tests
 
 ```bash
-ng build
+npm test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+**`trimmedStringLengthValidator`** — has to match the backend's
+20–500 limit exactly, including treating whitespace-only input as empty, not just short.
 
-## Running unit tests
+**`ListingService`** — checks the actual outgoing request (URL, method, body field name) — not to fail silently.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+**`ListingFormComponent`** — submit/clear/invalid-form paths, including that a failed request shows
+the generic error and that pressing submit twice only sends one request.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## Time spent and possible gaps
+Around 3-4 hours.
+The layout was only ever looked at on a desktop screen, not adapted for mobiles.
+Haven't finished with the "magical" themed design, for product to feel more wholesome.
+Technically - a request in process can't be cancelled, only prevented from starting a second time.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
