@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { ListingService, ListingSuggestion } from '@core/listing-service/listing-service';
+import { environment } from '../../../environments/environment';
 
 
 describe('ListingService', () => {
@@ -39,9 +40,9 @@ describe('ListingService', () => {
       expect(result).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(
-      'http://localhost:3000/listing/suggest'
-    );
+    // built from environment rather than hardcoded, so switching the API URL
+    // can't quietly break this test
+    const req = httpMock.expectOne(`${environment.apiUrl}/listing/suggest`);
 
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({
