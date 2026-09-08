@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 import { ListingFormComponent } from './listing-form';
 import { ListingService, ListingSuggestion } from '@core/listing-service/listing-service';
 
@@ -23,16 +23,8 @@ describe('ListingFormComponent', () => {
   });
 
   describe('onSubmit', () => {
-    it('does not call the service when the form is invalid (empty description)', () => {
+    it('does not call the service when the form is invalid', () => {
       component.form.controls.description.setValue('');
-
-      component.onSubmit();
-
-      expect(mockListingService.getSuggestion).not.toHaveBeenCalled();
-    });
-
-    it('does not call the service when description is below the minimum length', () => {
-      component.form.controls.description.setValue('short');
 
       component.onSubmit();
 
@@ -47,14 +39,29 @@ describe('ListingFormComponent', () => {
       };
       mockListingService.getSuggestion.mockReturnValue(of(mockResponse));
       component.form.controls.description.setValue(
-        'vintage leather jacket, worn once, size M',
+        '   vintage leather jacket, worn once, size M   ',
       );
 
       component.onSubmit();
 
+      expect(mockListingService.getSuggestion).toHaveBeenCalledWith(
+        'vintage leather jacket, worn once, size M',
+      );
       expect(component.suggestion()).toEqual(mockResponse);
       expect(component.isLoading()).toBe(false);
       expect(component.hasSubmitted()).toBe(true);
+    });
+
+    it('ignores a second submit while a request is still in flight', () => {
+      mockListingService.getSuggestion.mockReturnValue(new Subject<ListingSuggestion>());
+      component.form.controls.description.setValue(
+        'vintage leather jacket, worn once, size M',
+      );
+
+      component.onSubmit();
+      component.onSubmit();
+
+      expect(mockListingService.getSuggestion).toHaveBeenCalledTimes(1);
     });
 
     it('populates suggestion with a generic error message when the request fails', () => {

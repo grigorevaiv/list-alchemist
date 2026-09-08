@@ -45,7 +45,7 @@ export class ListingFormComponent {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.isLoading()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -65,7 +65,7 @@ export class ListingFormComponent {
           title: '',
           tags: [],
           priceRange: '',
-          error: 'Something went wrong — please try again',
+          error: 'Something went wrong - please try again',
         });
         this.isLoading.set(false);
       },
