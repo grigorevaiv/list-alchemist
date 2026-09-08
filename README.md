@@ -11,31 +11,24 @@ Backend repo: [list alchemist api](https://github.com/grigorevaiv/list-alchemist
 
 ```bash
 npm install
-```
-
-```bash
 npm start
 ```
 
-Opens on `http://localhost:4200`.
+Opens on `http://localhost:4200`, pointing at the deployed backend by default — works with zero
+setup. Note the backend sleeps when idle, so the first request can take 30–60 seconds.
 
-**The backend has to be running too.** By default this app points at `http://localhost:3000`
-(`src/environments/environment.ts`). Start the API in mock mode — no API key needed:
+To run against a local backend instead (e.g. mock mode, no API key needed), change `apiUrl` in
+`src/environments/environment.ts` to `http://localhost:3000` and start the API separately — see
+[backend README](https://github.com/grigorevaiv/list-alchemist-api).
 
-[backend README](https://github.com/grigorevaiv/list-alchemist-api#quick-start-mock-mode)
-
-If you'd rather not run the backend at all, point `environment.ts` at the deployed API instead:
-`https://list-alchemist-api.onrender.com`. Note it sleeps when idle, so the first request can take
-30–60 seconds.
-
-### If you don't want to start backend locally, both frontend and backend are deployed and connected
-To run the whole app against the real model, go [here](https://list-alchemist.onrender.com/)
+Just want to see it without installing anything?
+[list-alchemist.onrender.com](https://list-alchemist.onrender.com/)
 
 ### Environments
 
 | File | Used by | API URL |
 |---|---|---|
-| `src/environments/environment.ts` | `npm start` (development) | `http://localhost:3000` |
+| `src/environments/environment.ts` | `npm start` (development) | deployed API by default |
 | `src/environments/environment.prod.ts` | `npm run build` (production) | deployed API |
 
 ---
@@ -66,8 +59,10 @@ the generic error and that pressing submit twice only sends one request.
 ---
 
 ## Time spent and possible gaps
-Around 3-4 hours.
-The layout was only ever looked at on a desktop screen, not adapted for mobiles.
-Haven't finished with the "magical" themed design, for product to feel more wholesome.
-Technically - a request in process can't be cancelled, only prevented from starting a second time.
+
+Around 3–4 hours.
+No mobile/responsive check — only ever looked at on a desktop screen. The "alchemist" theme isn't
+fully carried through — it's there in name and palette, but doesn't yet deliver the full sense of
+magic the product is going for. A request in flight can't be cancelled, only prevented from starting
+a second time.
 
