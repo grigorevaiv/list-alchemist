@@ -26,17 +26,17 @@ Just want to see it without installing anything?
 
 ### Environments
 
-| File | Used by | API URL |
-|---|---|---|
-| `src/environments/environment.ts` | `npm start` (development) | deployed API by default |
-| `src/environments/environment.prod.ts` | `npm run build` (production) | deployed API |
+| File                                   | Used by                      | API URL                 |
+| -------------------------------------- | ---------------------------- | ----------------------- |
+| `src/environments/environment.ts`      | `npm start` (development)    | deployed API by default |
+| `src/environments/environment.prod.ts` | `npm run build` (production) | deployed API            |
 
 ---
 
 ## How it works
 
 One screen, one form. Just paste or insert your description in the text field.
-The description must be **20–500 characters after trimming**.
+The description must be **20–500 characters**.
 It either returns a listing with title, tags and price range (sometimes with a note asking for more
 detail to sharpen the estimate), or an error message if the model or the connection has a problem.
 
@@ -61,8 +61,6 @@ the generic error and that pressing submit twice only sends one request.
 ## Time spent and possible gaps
 
 Around 3–4 hours.
-No mobile/responsive check — only ever looked at on a desktop screen. The "alchemist" theme isn't
-fully carried through — it's there in name and palette, but doesn't yet deliver the full sense of
-magic the product is going for. A request in flight can't be cancelled, only prevented from starting
+No mobile/responsive check — only ever looked at on a desktop screen.
+A request in flight can't be cancelled, only prevented from starting
 a second time.
-

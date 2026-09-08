@@ -75,7 +75,7 @@ describe('ListingFormComponent', () => {
       component.onSubmit();
 
       expect(component.suggestion()?.error).toBe(
-        'Something went wrong — please try again',
+        'Something went wrong - please try again',
       );
       expect(component.isLoading()).toBe(false);
     });

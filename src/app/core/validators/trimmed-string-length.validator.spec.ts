@@ -10,7 +10,7 @@ describe('trimmedStringLengthValidator', () => {
   });
 
   it('returns a "required" error for a whitespace-only string', () => {
-    const control = new FormControl('                    '); // 20 пробелов
+    const control = new FormControl('                    ');
     expect(validator(control)).toEqual({ required: true });
   });
 
