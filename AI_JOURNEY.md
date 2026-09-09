@@ -30,12 +30,12 @@ smoke test (does it compile, does it not crash).
 **3. The argument over how to hand errors to the frontend.**
 
 Claude's initial version sent both logical and infrastructure-level errors
-the same way — a 201 status with the error text in an error field,
+the same way — a 200 status with the error text in an error field,
 regardless of the underlying cause. That meant "the network to the AI
 provider is down" and "the model honestly said it couldn't understand the
 description" looked identical to the client. We decided to split it:
 infrastructure failures now return a real HTTP error status, logical
-outcomes stay 201 with an error field.
+outcomes stay 200 with an error field.
 
 ## A time the AI got it wrong, and how I spotted it
 
