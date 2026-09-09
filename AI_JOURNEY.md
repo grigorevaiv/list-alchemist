@@ -4,7 +4,7 @@
 
 Claude — for practically the entire development process: reasoning out
 loud, discussing architectural decisions, prompt engineering for the AI
-module itself, debugging, writing tests (unfamiliar syntax to me), and
+module itself, debugging, writing tests, and
 writing the initial skeleton (first version) of the project. Worked in a
 Socratic way — nearly every decision went through "why this way? what are
 the alternatives?" — I asked, argued, and weighed pros and cons of
@@ -18,9 +18,7 @@ The first version of the prompt Claude wrote for the AI module included the
 word "appealing" — focused on making the description sound more sales-y.
 The problem: on minimal input, the model started adding buzzwords like
 "stylish," "practical," "beautiful," none of which help a real buyer
-searching for the item. What actually helps is accurate, specific
-information — brand, condition, model. The prompt was rewritten around
-accuracy instead of salesmanship.
+searching for the item. I tried softening it first — "appealing, but only when there's enough detail" — and tested again; the model just rearranged the same facts into a different sentence order without becoming more useful. That's when the real question came up: what does "better" even mean here? For a secondhand marketplace, accurate and searchable beats persuasive — so the prompt was rewritten around that instead.
 
 **2. What's the actual criterion for deciding what to test?**
 
@@ -52,9 +50,11 @@ JSON or had the expected shape and field types.
 
 ## Anything in my codebase I don't fully understand
 
-The tests, specifically the syntax. I understand why they're there and why
-the specific things they test matter, but I couldn't have written them from
-scratch myself.
+The tests, specifically. The process was me specifying what I thought was worth testing, based on
+the logic of the code, discussing it with Claude, and having Claude implement it. I understand why
+each test exists, but more than once I looked at a generated test and genuinely didn't understand
+what it was doing until I asked Claude to break it down for me — this file is honest that testing
+is the part of this project I leaned on AI most directly.
 
 ## What I'd fix with another four hours
 
@@ -62,10 +62,6 @@ I'd add a bit more "magic" to the frontend — right now it doesn't fully
 carry the "alchemist" feeling, the sense of wonder people associate with
 how AI works. That would strengthen the overall product impression.
 
-Technically — I'd tighten the validation of the AI's response further
-(making sure tags isn't 100500 items length, that every tag is actually a
-valid, non-empty string). And I'd carry the infrastructure/logical error
-split the rest of the way: right now the client only gets a bare status
-code with no detail, which solves the original problem of distinguishing
-infrastructure failures from logical ones, but it also flattens the
-granularity within infrastructure failures themselves.
+I'd want to properly learn testing and revisit the test suite as a
+whole — this was my first time writing tests, and I suspect I both missed some real coverage gaps and
+tested a few things that were too trivial to be worth it.
